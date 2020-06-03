@@ -18,7 +18,6 @@ public class Parser {
             if (tempchoice < minChoice) {
                 System.out.println("No valid input - too low");
                 decide(1,2);
-
             } else if (tempchoice > maxChoice) {
                 System.out.println("No valid input - too high");
                 decide(1,2);

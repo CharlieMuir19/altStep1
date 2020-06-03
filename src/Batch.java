@@ -17,13 +17,13 @@ public class Batch {
     private int batchWeight;
     private String batchNumber;
     Fruit fruit = new Fruit();
+    FileManage filemanager = new FileManage();
 
     //begins gathering information from user
     public Batch() {
-
         printWelcome();
-        startChoice();
         generateDate();
+        askPrintDetails();
     }
 
     private void printWelcome() {
@@ -33,6 +33,8 @@ public class Batch {
         System.out.println("1. Create a new batch");
         System.out.println("2. Quit");
         System.out.println("Please enter 1 or 2");
+
+        startChoice();
     }
 
     private void startChoice() {
@@ -64,8 +66,8 @@ public class Batch {
         System.out.print("\n >");
         int minFarmCode = 0;
         int maxFarmCode = 999;
-        int temp = Parser.decide(minFarmCode, maxFarmCode);
-        farmCode = String.format("%03d", temp);
+        int tempFarm = Parser.decide(minFarmCode, maxFarmCode);
+        farmCode = String.format("%03d", tempFarm);
         printFarmCode();
     }
 
@@ -80,47 +82,37 @@ public class Batch {
     private void askBatchWeight() {
         System.out.println("\nEnter Batch Weight in KGs(max weight per batch is 100kg)" + "\n >");
         batchWeight = Parser.decide(1, 100);
-        System.out.println("Batch Weight :" + batchWeight);
+        System.out.println("Batch Weight :" + batchWeight + "kgs");
         validateBatch();
     }
 
     private void validateBatch() {
         System.out.println("This batch contains " + batchWeight + " kgs of " +  finalFruit +
                 " \nfrom Farm Number " + farmCode + " recieved on " + date + ". Is this correct?");
-        System.out.println("\n1. YES - SAVE");
-        System.out.println("\n2. NO - RESTART");
+        System.out.println("1. YES - SAVE");
+        System.out.println("2. NO - RESTART");
         int correctBatch = Parser.decide(1,2);
-        if (correctBatch == 2){
-            generateDate();
-        } else if (correctBatch == 1){
+        if (correctBatch == 1){
             generateBatchNumber();
+        } else if (correctBatch == 2){
+            generateDate();
         }
     }
 
     private void generateBatchNumber() {
         batchNumber = date + "-" + fruitCode + "-" + farmCode;
-        FileManage filemanager = new FileManage();
-        filemanager.saveDataFile(batchNumber);
+        filemanager.saveDataFile(batchNumber, finalFruit, fruitCode, batchWeight, date);
     }
-
-    public String batchDetails() {
-        return "Batch Number: " + batchNumber + "\n"
-                + "Recieved Date: " + date + "\n"
-                + "Fruit Type" + finalFruit + "\n"
-                + "Batch Weight: " + batchWeight + "kg" + "\n";
-
-    }
-
 
     public void askPrintDetails() {
         System.out.println("Would you like to print batch details?");
         System.out.println("\n1. YES");
         System.out.println("\n2. NO - FINISH");
         int correctBatch = Parser.decide(1,2);
-        if (correctBatch == 2){
-            new Batch();
-        } else if (correctBatch == 1){
+        if (correctBatch == 1){
             printBatchDetails();
+        } else if (correctBatch == 2){
+            new Batch();
         }
     }
 
@@ -129,5 +121,7 @@ public class Batch {
                 + "Recieved Date: " + date + "\n"
                 + "Fruit Type" + finalFruit + "\n"
                 + "Batch Weight: " + batchWeight + "kg" + "\n");
+        System.out.println("\n");
+        printWelcome();
     }
 }
