@@ -16,9 +16,11 @@ public class Batch {
     private String fruitCode;
     private int batchWeight;
     private String batchNumber;
+    Fruit fruit = new Fruit();
 
     //begins gathering information from user
     public Batch() {
+
         printWelcome();
         startChoice();
         generateDate();
@@ -30,6 +32,7 @@ public class Batch {
         System.out.println("Please select a function.");
         System.out.println("1. Create a new batch");
         System.out.println("2. Quit");
+        System.out.println("Please enter 1 or 2");
     }
 
     private void startChoice() {
@@ -68,32 +71,9 @@ public class Batch {
 
     private void printFarmCode() {
         System.out.println("Farm Code: " + farmCode);
-        askFruitType();
-    }
-
-    private void askFruitType() {
-        System.out.println("Choose a fruit: " +
-                "\n1. Strawberry " +
-                "\n2. Raspberry " +
-                "\n3. Blackberry " +
-                "\n4. Gooseberry " +
-                "\n >");
-
-        int choice = Parser.decide(1,4);
-        switch (choice) {
-            case 1:
-                setSTFruit();
-                break;
-            case 2:
-                setRAFruit();
-                break;
-            case 3:
-                setBLFruit();
-                break;
-            case 4:
-                setGOFruit();
-                break;
-        }
+        fruit.askFruitType();
+        finalFruit = fruit.returnFruit();
+        fruitCode = fruit.returnFruitCode();
         askBatchWeight();
     }
 
@@ -107,23 +87,11 @@ public class Batch {
     private void validateBatch() {
         System.out.println("This batch contains " + batchWeight + " kgs of " +  finalFruit +
                 " \nfrom Farm Number " + farmCode + " recieved on " + date + ". Is this correct?");
-        System.out.println("\n1. YES");
-        System.out.println("\n2. NO");
+        System.out.println("\n1. YES - SAVE");
+        System.out.println("\n2. NO - RESTART");
         int correctBatch = Parser.decide(1,2);
         if (correctBatch == 2){
             generateDate();
-        } else if (correctBatch == 1){
-            askSave();
-        }
-    }
-
-    private void askSave() {
-        System.out.println("Would you like to save these details?");
-        System.out.println("\n1. YES");
-        System.out.println("\n2. NO - FINISH");
-        int correctBatch = Parser.decide(1,2);
-        if (correctBatch == 2){
-            new Batch();
         } else if (correctBatch == 1){
             generateBatchNumber();
         }
@@ -131,45 +99,35 @@ public class Batch {
 
     private void generateBatchNumber() {
         batchNumber = date + "-" + fruitCode + "-" + farmCode;
-        //saveDataFile(batchNumber);
+        FileManage filemanager = new FileManage();
+        filemanager.saveDataFile(batchNumber);
     }
 
-//    private void saveDataFile(String filename) {
-//        try {
-//            Path filepath = Paths.get("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\" + batchNumber + ".txt");
-//            File outputFile = filepath.toFile();
-//            if (!outputFile.exists()) {
-//                outputFile.createNewFile();
-//            }
-//            FileWriter writer = new FileWriter(filepath.toString());
-//            writer.write(batchDetails());
-//            writer.close();
-//            askPrintDetails();
-//        } catch (IOException ioe) {
-//            dataDisplay.append("There was a problem writing to " + filename);
-//            dataDisplay.append("Error message: " + ioe.getMessage());
-//        }
-//
-//    }
+    public String batchDetails() {
+        return "Batch Number: " + batchNumber + "\n"
+                + "Recieved Date: " + date + "\n"
+                + "Fruit Type" + finalFruit + "\n"
+                + "Batch Weight: " + batchWeight + "kg" + "\n";
 
-    private void setSTFruit() {
-        finalFruit = "Strawberry";
-        fruitCode = "ST";
-        System.out.println("You choose: " + finalFruit);
     }
-    private void setRAFruit() {
-        finalFruit = "Raspberry";
-        fruitCode = "RA";
-        System.out.println("You choose: " + finalFruit);
+
+
+    public void askPrintDetails() {
+        System.out.println("Would you like to print batch details?");
+        System.out.println("\n1. YES");
+        System.out.println("\n2. NO - FINISH");
+        int correctBatch = Parser.decide(1,2);
+        if (correctBatch == 2){
+            new Batch();
+        } else if (correctBatch == 1){
+            printBatchDetails();
+        }
     }
-    private void setBLFruit() {
-        finalFruit = "Blackberry";
-        fruitCode = "BL";
-        System.out.println("You choose: " + finalFruit);
-    }
-    private void setGOFruit(){
-        finalFruit = "Gooseberry";
-        fruitCode = "GO";
-        System.out.println("You choose: " + finalFruit);
+
+    private void printBatchDetails() {
+        System.out.println("Batch Number: " + batchNumber + "\n"
+                + "Recieved Date: " + date + "\n"
+                + "Fruit Type" + finalFruit + "\n"
+                + "Batch Weight: " + batchWeight + "kg" + "\n");
     }
 }

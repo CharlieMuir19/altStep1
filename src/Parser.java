@@ -10,17 +10,20 @@ public class Parser {
     }
 
     public static int decide(int minChoice, int maxChoice) {
-        int choice = 0;
+        int tempchoice = 0;
+        int choice =0;
         boolean valid = false;
         if (reader.hasNextInt()) {
-            choice = reader.nextInt();
-            if (choice < minChoice) {
+            tempchoice = reader.nextInt();
+            if (tempchoice < minChoice) {
                 System.out.println("No valid input - too low");
-                reader.nextInt();
-            } else if (choice > maxChoice) {
+                decide(1,2);
+
+            } else if (tempchoice > maxChoice) {
                 System.out.println("No valid input - too high");
-                reader.nextInt();
-            } else if (choice >= minChoice && choice <= maxChoice)
+                decide(1,2);
+            } else if (tempchoice >= minChoice && tempchoice <= maxChoice)
+                choice = tempchoice;
                 valid = true;
         }
         return choice;
