@@ -1,3 +1,5 @@
+import jdk.internal.util.xml.impl.Input;
+
 public class Fruit {
 
     private String finalFruit;
@@ -11,7 +13,7 @@ public class Fruit {
                 "\n4. Gooseberry " +
                 "\n >");
 
-        int choice = Parser.decide(1,4);
+        int choice = InputHandler.decide(1,4);
         switch (choice) {
             case 1:
                 setSTFruit();
@@ -29,25 +31,21 @@ public class Fruit {
 
     }
 
-    private void setSTFruit() {
+    public void setSTFruit() {
         finalFruit = "Strawberry";
         fruitCode = "ST";
-        System.out.println("You choose: " + finalFruit);
     }
-    private void setRAFruit() {
+    public void setRAFruit() {
         finalFruit = "Raspberry";
         fruitCode = "RA";
-        System.out.println("You choose: " + finalFruit);
     }
-    private void setBLFruit() {
+    public void setBLFruit() {
         finalFruit = "Blackberry";
         fruitCode = "BL";
-        System.out.println("You choose: " + finalFruit);
     }
-    private void setGOFruit(){
+    public void setGOFruit(){
         finalFruit = "Gooseberry";
         fruitCode = "GO";
-        System.out.println("You choose: " + finalFruit);
     }
 
     public String returnFruit(){

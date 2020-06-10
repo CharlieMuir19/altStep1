@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
-public class Parser {
+public class InputHandler {
     private static final Scanner reader = new Scanner(System.in); // source of command input
 
     /**
      * Create a parser to read from the terminal window.
      */
-    public Parser() {
+    public InputHandler() {
     }
 
     public static int decide(int minChoice, int maxChoice) {
