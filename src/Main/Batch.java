@@ -1,9 +1,5 @@
-import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
+//The Batch class sets and gets all important information in each batch
 public class Batch {
-
     private String date;
     private String farmCode;
     private String finalFruit;

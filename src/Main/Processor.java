@@ -8,11 +8,15 @@ import java.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+//The Processor class processes print statements, retrieves input and if valid passes input to Batch file to be saved.
+//The Processor class also saves batch details to a json file in a defined filepath.
 public class Processor {
 
+    //We create instances of Batch and Fruit to access methods to get and set data.
     Batch b = new Batch();
     Fruit fruit = new Fruit();
 
+    //
     public Processor() {
         printWelcome();
         generateDate();
