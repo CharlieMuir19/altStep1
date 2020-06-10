@@ -7,7 +7,7 @@ public class Batch {
     private int batchWeight;
     private String batchNumber;
 
-    //begins gathering information from user
+    //Batch allows other classes to get and set the most important batch values
     public Batch() {
     }
 

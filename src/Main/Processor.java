@@ -16,13 +16,14 @@ public class Processor {
     Batch b = new Batch();
     Fruit fruit = new Fruit();
 
-    //
+    //When called in Main, the program starts and the user can begin to interact with the system
     public Processor() {
         printWelcome();
         generateDate();
         askPrintDetails();
     }
 
+    //Message is displayed to the user to begin the
     private void printWelcome() {
         System.out.print("Welcome to Renfrewshire Soft Fruits Co batch system.");
         System.out.print("This system allows you to create batches of fruit.");
@@ -33,7 +34,7 @@ public class Processor {
         startChoice();
     }
 
-    //The date is generated and stored to constructor
+    //The date is generated and set within Batch
     public void generateDate() {
         DateTimeFormatter dateformat;
         dateformat = DateTimeFormatter.ofPattern("ddMMyyyy");
@@ -43,6 +44,7 @@ public class Processor {
         displayDate();
     }
 
+    //Based on the input, decide whether to create a new batch, or quit the system.
     public void startChoice() {
         int createBatch = 1;
         int quit = 2;
@@ -52,11 +54,13 @@ public class Processor {
         }
     }
 
+    //Display the date previously set
     public void displayDate() {
         System.out.println("Date: " + b.getDate());
         askFarmCode();
     }
 
+    //Ask user to enter farm code and set if valid
     public void askFarmCode() {
         System.out.print("Enter Farm Number (000 to 999)");
         System.out.print("\n >");
@@ -67,6 +71,7 @@ public class Processor {
         printFarmCode();
     }
 
+    //print the farmCode after set
     private void printFarmCode() {
         System.out.println("Farm Code: " + b.getFarmCode());
         fruit.askFruitType();
@@ -76,6 +81,7 @@ public class Processor {
         askBatchWeight();
     }
 
+    //Ask user to enter batch weight
     private void askBatchWeight() {
         System.out.println("Enter Batch Weight in KGs(max weight per batch is 100kg)" + "\n >");
         b.setBatchWeight(InputHandler.decide(1, 100));
@@ -83,6 +89,7 @@ public class Processor {
         validateBatch();
     }
 
+    //Confirm whether batch is correct before saving, or go back to start of new batch
     private void validateBatch() {
         System.out.println("This batch contains " + b.getBatchWeight() + " kgs of " + b.getFruit() +
                 " \nfrom Farm Number " + b.getFarmCode() + " recieved on " + b.getDate() + ". Is this correct?");
@@ -96,12 +103,14 @@ public class Processor {
         }
     }
 
+    //generate the individual batch number that is used for saving the file
     private void generateBatchNumber() {
         String temp = b.getDate() + "-" + b.getFruitCode() + "-" + b.getFarmCode();
         b.setBatchNumber(temp);
         saveJsonfile();
     }
 
+    //Decide whether to print details or finish creating this batch and start again
     public void askPrintDetails() {
         System.out.println("Would you like to print batch details?");
         System.out.println("\n1. YES");
@@ -110,10 +119,11 @@ public class Processor {
         if (correctBatch == 1) {
             printBatchDetails();
         } else if (correctBatch == 2) {
-            new Batch();
+            new Processor();
         }
     }
 
+    //once batch is printed it then goes back to the start
     private void printBatchDetails() {
         System.out.println("Batch Number: " + b.getBatchNumber() + "\n"
                 + "Recieved Date: " + b.getDate() + "\n"
@@ -123,25 +133,7 @@ public class Processor {
         new Processor();
     }
 
-    public void saveDataFile(String batchNumber, String finalFruit, int batchWeight, String date) {
-        try {
-            Path filepath = Paths.get("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\" + batchNumber + ".txt");
-            java.io.File outputFile = filepath.toFile();
-            if (!outputFile.exists()) {
-                outputFile.createNewFile();
-            }
-            FileWriter writer = new FileWriter(filepath.toString());
-            writer.write("Batch Number: " + batchNumber + "\n"
-                    + "Recieved Date: " + date + "\n"
-                    + "Fruit Type: " + finalFruit + "\n"
-                    + "Batch Weight: " + batchWeight + "kg" + "\n");
-            writer.close();
-        } catch (IOException ioe) {
-            System.out.println("There was a problem writing to " + batchNumber + ".txt");
-            System.out.println("Error message: " + ioe.getMessage());
-        }
-    }
-
+    //save the batch details to a json file in a specified filepath
     public void saveJsonfile() {
         JSONObject batchDetails = new JSONObject();
         batchDetails.put("Batch Number:", b.getBatchNumber());
@@ -152,9 +144,6 @@ public class Processor {
         JSONObject batchObject = new JSONObject();
         batchObject.put("Batch Details: ", batchDetails);
 
-        batchObject.get(b.getBatchNumber());
-        //Add batch to list
-        JSONArray batch = new JSONArray();
         //Write JSON file
         Path filepath = Paths.get("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\" + b.getBatchNumber() + ".json");
         java.io.File outputFile = filepath.toFile();
