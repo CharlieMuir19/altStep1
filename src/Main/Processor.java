@@ -196,9 +196,9 @@ public class Processor {
                 System.out.println("File: " + listOfBatches[i].getName());
                 batchList.forEach( btc -> parsebatchObject( (JSONObject) btc ) );
             } catch (ParseException | IOException e) {
-                e.printStackTrace();
+               System.out.println("Oops, there are no files to list.");
             }
-        }
+        }selectFunction();
     }
 
     private void sortGradeBatches() {
