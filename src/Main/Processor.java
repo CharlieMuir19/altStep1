@@ -59,6 +59,7 @@ public class Processor {
         } else if (startChoice == 4) {
             sortGradeBatches();
         } else if (startChoice == 5) {
+            System.out.println("Thank you for using Renfewshire Soft Fruits batch system");
             System.exit(0);
         }
     }
@@ -175,13 +176,13 @@ public class Processor {
         //sources to credit: https://howtodoinjava.com/library/json-simple-read-write-json-examples/#maven
         //https://stackoverflow.com/questions/36240647/reading-multiple-files-in-a-folder-using-java
 
-        File[] listOfBatches=null;
+        File[] listOfBatches = null;
         String[] myDocs;
 
         File batchOutputFolder = new File("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\");
         listOfBatches = batchOutputFolder.listFiles();
         myDocs = new String[listOfBatches.length];
-        for(int i=0;i<listOfBatches.length;i++) {
+        for (int i = 0; i < listOfBatches.length; i++) {
             myDocs[i] = listOfBatches[i].getName();
             JSONParser jsonParser = new JSONParser();
             try (FileReader reader = new FileReader("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\" + myDocs[i])) {
@@ -195,12 +196,40 @@ public class Processor {
                 e.printStackTrace();
             }
         }
+        printWelcome();
     }
 
     private void sortGradeBatches() {
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\")) {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+            JSONArray batchList = new JSONArray();
+            batchList.add(obj);
+            System.out.println(batchList);
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
     private void viewBatchDetail() {
+        System.out.print("Please enter in the batch you would like to view. E.g. 10062020-ST-000\n");
+        String file = InputHandler.getFile();
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\" + file + ".json")) {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+            JSONArray batchList = new JSONArray();
+            batchList.add(obj);
+            System.out.println(batchList);
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+        printWelcome();
     }
 
 

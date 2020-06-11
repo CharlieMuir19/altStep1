@@ -31,6 +31,13 @@ public class InputHandler {
         }
         return choice;
     }
+    
+    public static String getFile(){
+        String filename = "";
+        if(reader.hasNext()){
+            filename = reader.next();
+        } return filename;
+    } 
 }
 
 
