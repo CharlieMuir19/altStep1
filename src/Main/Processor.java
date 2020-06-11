@@ -1,5 +1,4 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -7,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 //The Processor class processes print statements, retrieves input and if valid passes input to Batch file to be saved.
 //The Processor class also saves batch details to a json file in a defined filepath.
@@ -19,8 +20,6 @@ public class Processor {
     //When called in Main, the program starts and the user can begin to interact with the system
     public Processor() {
         printWelcome();
-        generateDate();
-        askPrintDetails();
     }
 
     //Message is displayed to the user to begin the
@@ -29,8 +28,11 @@ public class Processor {
         System.out.print("This system allows you to create batches of fruit.");
         System.out.println("Please select a function.");
         System.out.println("1. Create a new batch");
-        System.out.println("2. Quit");
-        System.out.println("Please enter 1 or 2");
+        System.out.println("2. List all Batches");
+        System.out.println("3. View details of a batch");
+        System.out.println("4. Sort/Grade a batch");
+        System.out.println("5. Quit");
+        System.out.println("Please enter 1 to 5");
         startChoice();
     }
 
@@ -44,12 +46,19 @@ public class Processor {
         displayDate();
     }
 
-    //Based on the input, decide whether to create a new batch, or quit the system.
+    //Based on the input, decide whether to create a new batch, list batches,
+    // get specific batch details, sort/grade batches or quit the system.
     public void startChoice() {
-        int createBatch = 1;
-        int quit = 2;
-        int startChoice = InputHandler.decide(createBatch, quit);
-        if (startChoice == 2) {
+        int startChoice = InputHandler.decide(1, 5);
+        if (startChoice == 1) {
+            generateDate();
+        } else if (startChoice == 2) {
+            listAllBatches();
+        } else if (startChoice == 3) {
+            viewBatchDetail();
+        } else if (startChoice == 4) {
+            sortGradeBatches();
+        } else if (startChoice == 5) {
             System.exit(0);
         }
     }
@@ -108,6 +117,7 @@ public class Processor {
         String temp = b.getDate() + "-" + b.getFruitCode() + "-" + b.getFarmCode();
         b.setBatchNumber(temp);
         saveJsonfile();
+        askPrintDetails();
     }
 
     //Decide whether to print details or finish creating this batch and start again
@@ -129,7 +139,6 @@ public class Processor {
                 + "Recieved Date: " + b.getDate() + "\n"
                 + "Fruit Type" + b.getFruit() + "\n"
                 + "Batch Weight: " + b.getBatchWeight() + "kg" + "\n");
-        System.out.println("\n");
         new Processor();
     }
 
@@ -154,9 +163,46 @@ public class Processor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             System.out.println("This batch" + b.getBatchNumber() + " already exists");
         }
     }
+
+    //JSON parser object to parse read file
+    //first retrieve the names of all files,
+    // and using a loop get each file, list batch details then get next file
+    private void listAllBatches() {
+        //sources to credit: https://howtodoinjava.com/library/json-simple-read-write-json-examples/#maven
+        //https://stackoverflow.com/questions/36240647/reading-multiple-files-in-a-folder-using-java
+
+        File[] listOfBatches=null;
+        String[] myDocs;
+
+        File batchOutputFolder = new File("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\");
+        listOfBatches = batchOutputFolder.listFiles();
+        myDocs = new String[listOfBatches.length];
+        for(int i=0;i<listOfBatches.length;i++) {
+            myDocs[i] = listOfBatches[i].getName();
+            JSONParser jsonParser = new JSONParser();
+            try (FileReader reader = new FileReader("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\" + myDocs[i])) {
+                //Read JSON file
+                Object obj = jsonParser.parse(reader);
+                JSONArray batchList = new JSONArray();
+                batchList.add(obj);
+                System.out.println("File: " + listOfBatches[i].getName());
+                System.out.println(batchList);
+            } catch (ParseException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void sortGradeBatches() {
+    }
+
+    private void viewBatchDetail() {
+    }
+
+
 }
 
