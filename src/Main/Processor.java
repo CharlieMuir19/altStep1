@@ -26,6 +26,10 @@ public class Processor {
     private void printWelcome() {
         System.out.print("Welcome to Renfrewshire Soft Fruits Co batch system.");
         System.out.print("This system allows you to create batches of fruit.");
+        selectFunction();
+    }
+
+    private void selectFunction(){
         System.out.println("Please select a function.");
         System.out.println("1. Create a new batch");
         System.out.println("2. List all Batches");
@@ -35,7 +39,6 @@ public class Processor {
         System.out.println("Please enter 1 to 5");
         startChoice();
     }
-
     //The date is generated and set within Batch
     public void generateDate() {
         DateTimeFormatter dateformat;
@@ -138,7 +141,7 @@ public class Processor {
     private void printBatchDetails() {
         System.out.println("Batch Number: " + b.getBatchNumber() + "\n"
                 + "Recieved Date: " + b.getDate() + "\n"
-                + "Fruit Type" + b.getFruit() + "\n"
+                + "Fruit Type: " + b.getFruit() + "\n"
                 + "Batch Weight: " + b.getBatchWeight() + "kg" + "\n");
         new Processor();
     }
@@ -146,7 +149,7 @@ public class Processor {
     //save the batch details to a json file in a specified filepath
     public void saveJsonfile() {
         JSONObject batchDetails = new JSONObject();
-        batchDetails.put("Batch Number:", b.getBatchNumber());
+        batchDetails.put("Batch Number: ", b.getBatchNumber());
         batchDetails.put("Recieved Date: ", b.getDate());
         batchDetails.put("Fruit: ", b.getFruit());
         batchDetails.put("Batch Weight: ", b.getBatchWeight() + "kgs");
@@ -162,7 +165,7 @@ public class Processor {
                 file.write(batchObject.toJSONString());
                 file.flush();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Oops, there has been an error saving your batch.");
             }
         } else {
             System.out.println("This batch" + b.getBatchNumber() + " already exists");
@@ -191,32 +194,15 @@ public class Processor {
                 JSONArray batchList = new JSONArray();
                 batchList.add(obj);
                 System.out.println("File: " + listOfBatches[i].getName());
-                System.out.println(batchList);
+                batchList.forEach( btc -> parsebatchObject( (JSONObject) btc ) );
             } catch (ParseException | IOException e) {
                 e.printStackTrace();
             }
         }
-        printWelcome();
     }
 
     private void sortGradeBatches() {
-
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\")) {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
-            JSONArray batchList = new JSONArray();
-            batchList.add(obj);
-            System.out.println(batchList);
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
-        
-    }
-
-    private void viewBatchDetail() {
-        System.out.print("Please enter in the batch you would like to view. E.g. 10062020-ST-000\n");
+        System.out.print("Please enter in the batch number. E.g. 11062020-ST-000\n");
         String file = InputHandler.getFile();
         JSONParser jsonParser = new JSONParser();
 
@@ -225,13 +211,48 @@ public class Processor {
             Object obj = jsonParser.parse(reader);
             JSONArray batchList = new JSONArray();
             batchList.add(obj);
-            System.out.println(batchList);
+            batchList.forEach( btc -> parsebatchObject( (JSONObject) btc ) );
         } catch (ParseException | IOException e) {
-            e.printStackTrace();
+            System.out.println("Sorry, batch not found");
+            viewBatchDetail();
         }
-        printWelcome();
+        selectFunction();
+
+    }
+
+    private void parsebatchObject(JSONObject btc) {
+        //Get batch object within list
+        JSONObject batchObject = (JSONObject) btc.get("Batch Details: ");
+
+        //Get batch number, recieved date, fruit and batch weight in each batchObject
+        String batchNumber = (String) batchObject.get("Batch Number: ");
+        System.out.print("Batch Number: " + batchNumber + ", ");
+        String date = (String) batchObject.get("Recieved Date: ");
+        System.out.println("Recieved Date: " + date  + ", ");
+        String fruit = (String) batchObject.get("Fruit: ");
+        System.out.println("Fruit: " + fruit  + ", ");
+        String weight = (String) batchObject.get("Batch Weight: ");
+        System.out.println("Batch Weight: " + weight  + " ");
+        System.out.println("");
     }
 
 
-}
+    private void viewBatchDetail() {
+        System.out.print("Please enter in the batch you would like to view. E.g. 11062020-ST-000\n");
+        String file = InputHandler.getFile();
+        JSONParser jsonParser = new JSONParser();
 
+        try (FileReader reader = new FileReader("C:\\Users\\GA\\Documents\\Year1\\CS112 Programming 1- T3 Project\\step1Output\\" + file + ".json")) {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+            JSONArray batchList = new JSONArray();
+            batchList.add(obj);
+            batchList.forEach( btc -> parsebatchObject( (JSONObject) btc ) );
+            System.out.println("\n");
+        } catch (ParseException | IOException e) {
+            System.out.println("Sorry, batch not found");
+            viewBatchDetail();
+        }
+        selectFunction();
+    }
+}
