@@ -31,13 +31,33 @@ public class InputHandler {
         }
         return choice;
     }
-    
+
+    //the input handler recieves the filename from the user and returns back to the main processor
     public static String getFile(){
         String filename = "";
         if(reader.hasNext()){
             filename = reader.next();
         } return filename;
-    } 
+    }
+
+    //the input handler recieves the grade from the user and returns back to the main processor
+    //after validating it is between limits to begin (0 to 100)
+    public static int getGrade() {
+        int grade=0;
+        if (reader.hasNextInt()) {
+            int temp = reader.nextInt();
+            if (temp < 0) {
+                System.out.println("No valid input - too low");
+                getGrade();
+            } else if (temp > 100) {
+                System.out.println("No valid input - too high");
+            } else if (temp >= 0 && temp <= 100){
+                grade = temp;
+            } return grade;
+        }
+        return grade;
+    }
+
 }
 
 

@@ -5,14 +5,13 @@ public class Fruit {
     private String fruitCode;
 
     //Ask for input, recieve input and use switch statement to set the fruit type and fruit code.
-    void askFruitType() {
+    public void askFruitType() {
         System.out.println("Choose a fruit: " +
                 "\n1. Strawberry " +
                 "\n2. Raspberry " +
                 "\n3. Blackberry " +
                 "\n4. Gooseberry " +
                 "\n >");
-
         int choice = InputHandler.decide(1,4);
         switch (choice) {
             case 1:
@@ -28,7 +27,6 @@ public class Fruit {
                 setGOFruit();
                 break;
         }
-
     }
 
     //each fruit type has a seperate method to set the fruit and code
