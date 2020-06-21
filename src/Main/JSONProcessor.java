@@ -102,20 +102,32 @@ public class JSONProcessor {
 
             //calculate the weight of each individual grade for the fruit
             long gradeAPercentage = (long) gradeObject.get("Grade A: ");
-            long gradeWeightA = (long) (((float) weight / 100 )* gradeAPercentage);
-            System.out.println("Grade A: " + gradeAPercentage + "% = " + gradeWeightA + "kgs");
+            float gradeWeightA = (((float) weight / 100 )* gradeAPercentage);
+            System.out.println("Grade A: " + gradeAPercentage + "% = ");
+            System.out.printf("%.2f", gradeWeightA);
+            System.out.print("kgs");
+            System.out.println("\n");
 
             long gradeBPercentage = (long) gradeObject.get("Grade B: ");
-            long gradeWeightB = (long) (((float) weight / 100) * gradeBPercentage);
-            System.out.println("Grade B: " + gradeBPercentage + "% = " + gradeWeightB + "kgs");
+            float gradeWeightB = (((float) weight / 100) * gradeBPercentage);
+            System.out.println("Grade B: " + gradeBPercentage + "% = ");
+            System.out.printf("%.2f", gradeWeightB);
+            System.out.print("kgs");
+            System.out.println("\n");
 
             long gradeCPercentage = (long) gradeObject.get("Grade C: ");
-            long gradeWeightC = (long) (((float)weight / 100) * gradeCPercentage);
-            System.out.println("Grade C: " + gradeCPercentage + "% = " + gradeWeightC + "kgs");
+            float gradeWeightC = (((float)weight / 100) * gradeCPercentage);
+            System.out.println("Grade C: " + gradeCPercentage + "% = ");
+            System.out.printf("%.2f", gradeWeightC);
+            System.out.print("kgs");
+            System.out.println("\n");
 
             long rejectedPercentage = (long) gradeObject.get("Rejected: ");
-            long rejectedWeight = (long) (((float)weight / 100) * rejectedPercentage);
-            System.out.println("Rejects: " + rejectedPercentage + "% = " + rejectedWeight + "kgs");
+            float rejectedWeight = (((float)weight / 100) * rejectedPercentage);
+            System.out.println("Rejects: " + rejectedPercentage + "% = ");
+            System.out.printf("%.2f", rejectedWeight);
+            System.out.print("kgs");
+            System.out.println("\n");
         } catch (Exception e) {
             System.out.println("Please grade this batch before viewing grade details.");
         }
