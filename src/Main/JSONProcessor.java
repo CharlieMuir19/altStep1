@@ -102,19 +102,19 @@ public class JSONProcessor {
 
             //calculate the weight of each individual grade for the fruit
             long gradeAPercentage = (long) gradeObject.get("Grade A: ");
-            long gradeWeightA = ((weight / 100) * gradeAPercentage);
+            long gradeWeightA = (long) (((float) weight / 100 )* gradeAPercentage);
             System.out.println("Grade A: " + gradeAPercentage + "% = " + gradeWeightA + "kgs");
 
             long gradeBPercentage = (long) gradeObject.get("Grade B: ");
-            long gradeWeightB = ((weight / 100) * gradeBPercentage);
+            long gradeWeightB = (long) (((float) weight / 100) * gradeBPercentage);
             System.out.println("Grade B: " + gradeBPercentage + "% = " + gradeWeightB + "kgs");
 
             long gradeCPercentage = (long) gradeObject.get("Grade C: ");
-            long gradeWeightC = ((weight / 100) * gradeCPercentage);
+            long gradeWeightC = (long) (((float)weight / 100) * gradeCPercentage);
             System.out.println("Grade C: " + gradeCPercentage + "% = " + gradeWeightC + "kgs");
 
             long rejectedPercentage = (long) gradeObject.get("Rejected: ");
-            long rejectedWeight = ((weight / 100) * rejectedPercentage);
+            long rejectedWeight = (long) (((float)weight / 100) * rejectedPercentage);
             System.out.println("Rejects: " + rejectedPercentage + "% = " + rejectedWeight + "kgs");
         } catch (Exception e) {
             System.out.println("Please grade this batch before viewing grade details.");
@@ -206,7 +206,6 @@ public class JSONProcessor {
         long weight = (long) batchObjects.get("Batch Weight: ");
         System.out.println("Batch Weight: " + weight + " kgs\n ");
 
-        //Read JSON file
         batchDetails.put("Batch Number: ", batchNumber);
         batchDetails.put("Recieved Date: ", date);
         batchDetails.put("Fruit: ", fruit);

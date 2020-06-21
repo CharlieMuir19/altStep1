@@ -26,6 +26,9 @@ public class Fruit {
             case 4:
                 setGOFruit();
                 break;
+            case -1:
+                askFruitType();
+                break;
         }
     }
 

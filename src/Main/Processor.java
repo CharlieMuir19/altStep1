@@ -54,7 +54,9 @@ public class Processor {
     // get specific batch details, sort/grade batches or quit the system.
     private void startChoice() {
         int startChoice = inputHandler.decide(1, 5);
-        if (startChoice == 1) {
+        if (startChoice == -1) {
+            startChoice();
+        } else if (startChoice == 1) {
             generateDate();
         } else if (startChoice == 2) {
             jsonP.listAllBatches();
@@ -98,8 +100,12 @@ public class Processor {
         int minFarmCode = 0;
         int maxFarmCode = 999;
         int tempFarm = inputHandler.decide(minFarmCode, maxFarmCode);
-        b.setFarmCode(String.format("%03d", tempFarm));
-        printFarmCode();
+        if (tempFarm == -1) {
+            askFarmCode();
+        } else {
+            b.setFarmCode(String.format("%03d", tempFarm));
+            printFarmCode();
+        }
     }
 
     //print the farmCode after set
@@ -115,9 +121,14 @@ public class Processor {
     //Ask user to enter batch weight
     private void askBatchWeight() {
         System.out.println("Enter Batch Weight in KGs(max weight per batch is 100kg)" + "\n >");
-        b.setBatchWeight(inputHandler.decide(1, 100));
-        System.out.println("Batch Weight :" + b.getBatchWeight() + "kgs");
-        validateBatch();
+        int batchWeight = InputHandler.decide(1, 100);
+        if (batchWeight == -1) {
+            askBatchWeight();
+        } else {
+            b.setBatchWeight(batchWeight);
+            System.out.println("Batch Weight :" + b.getBatchWeight() + "kgs");
+            validateBatch();
+        }
     }
 
     //Confirm whether batch is correct before saving, or go back to start of new batch
@@ -131,6 +142,8 @@ public class Processor {
             generateBatchNumber();
         } else if (correctBatch == 2) {
             generateDate();
+        } else if (correctBatch == -1) {
+            validateBatch();
         }
     }
 
@@ -156,6 +169,8 @@ public class Processor {
             printBatchDetails();
         } else if (correctBatch == 2) {
             this.selectFunction();
+        } else if (correctBatch == -1) {
+            askPrintDetails();
         }
     }
 

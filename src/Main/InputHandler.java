@@ -15,35 +15,40 @@ public class InputHandler {
     //the method calculates whether the input is valid, and if its valid then passes it back to be assigned in the Processor class.
     public static int decide(int minChoice, int maxChoice) {
         int tempchoice = 0;
-        int choice =0;
+        int choice = -1;
         boolean valid = false;
         if (reader.hasNextInt()) {
             tempchoice = reader.nextInt();
             if (tempchoice < minChoice) {
                 System.out.println("No valid input - too low");
-                decide(1,2);
+                decide(1, 2);
             } else if (tempchoice > maxChoice) {
                 System.out.println("No valid input - too high");
-                decide(1,2);
-            } else if (tempchoice >= minChoice && tempchoice <= maxChoice)
+                decide(1, 2);
+            } else if (tempchoice >= minChoice && tempchoice <= maxChoice) {
                 choice = tempchoice;
                 valid = true;
+            }
+        } else if (reader.next().matches(".*[a-z].*")) {
+            System.out.println("Invalid Input - TEXT");
+            choice = -1;
         }
         return choice;
     }
 
     //the input handler recieves the filename from the user and returns back to the main processor
-    public static String getFile(){
+    public static String getFile() {
         String filename = "";
-        if(reader.hasNext()){
+        if (reader.hasNext()) {
             filename = reader.next();
-        } return filename;
+        }
+        return filename;
     }
 
     //the input handler recieves the grade from the user and returns back to the main processor
     //after validating it is between limits to begin (0 to 100)
     public static int getGrade() {
-        int grade=0;
+        int grade = 0;
         if (reader.hasNextInt()) {
             int temp = reader.nextInt();
             if (temp < 0) {
@@ -51,15 +56,15 @@ public class InputHandler {
                 getGrade();
             } else if (temp > 100) {
                 System.out.println("No valid input - too high");
-            } else if (temp >= 0 && temp <= 100){
+            } else if (temp >= 0 && temp <= 100) {
                 grade = temp;
-            } return grade;
+            }
+            return grade;
+        }else if (reader.next().matches(".*[a-z].*")){
+            System.out.println("Invalid Input - TEXT");
+            grade = -1;
         }
         return grade;
     }
 
 }
-
-
-
-
